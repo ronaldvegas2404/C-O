@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Campo Pro - Prioridades</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .ruta-section { margin-bottom: 20px; background: #e8f4fd; padding: 15px; border-radius: 8px; }
+        .input-group { margin-bottom: 12px; padding: 10px; border: 1px solid #eee; border-radius: 8px; transition: 0.3s; }
+        .input-group:hover { background: #f9f9f9; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85em; color: #34495e; }
+        .controls { display: flex; align-items: center; gap: 10px; }
+        .btn-tool { background-color: #3498db; color: white; border: none; border-radius: 6px; width: 35px; height: 35px; font-size: 1.2em; cursor: pointer; }
+        .btn-tool:hover { background-color: #2980b9; }
+        input[type="number"], input[type="text"] { flex-grow: 1; padding: 8px; border: 1px solid #cbd5e0; border-radius: 6px; text-align: center; }
+        .btn-generate { width: 100%; background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); }
+        .btn-generate:hover { background-color: #219150; transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Control de Campo</h2>
+    
+    <div class="ruta-section">
+        <label>NOMBRE DE LA RUTA:</label>
+        <input type="text" id="ruta" placeholder="Ej: UCA0022-UCA0033">
+    </div>
+
+    <div id="items-container">
+        </div>
+
+    <button class="btn-generate" onclick="generarReporte()">Copiar Reporte Clasificado</button>
+</div>
+
+<script>
+    const configItems = [
+        { id: "kv200", name: "Cambio de fibra kv200 (km)", step: 0.1, type: "fibra" },
+        { id: "kv300", name: "Cambio de fibra kv300 (km)", step: 0.1, type: "fibra" },
+        { id: "kv500", name: "Cambio de fibra kv500 (km)", step: 0.1, type: "fibra" },
+        { id: "kv1000", name: "Cambio de fibra kv1000 (km)", step: 0.1, type: "fibra" },
+        { id: "brazo", name: "Colocar Brazo", step: 1, type: "grupo7" },
+        { id: "c_cruceta", name: "Cambiar Cruceta", step: 1, type: "grupo7" },
+        { id: "co_cruceta", name: "Colocar Cruceta", step: 1, type: "grupo7" },
+        { id: "corr_cruceta", name: "Corregir Cruceta", step: 1, type: "p1_fijo" },
+        { id: "c_mufa", name: "Cambiar Mufa", step: 1, type: "grupo7" },
+        { id: "co_mufa", name: "Colocar Mufa", step: 1, type: "grupo7" },
+        { id: "corr_mufa", name: "Corregir Mufa", step: 1, type: "p1_fijo" },
+        { id: "tension", name: "Colocar Tensión (Preformado)", step: 1, type: "grupo7" },
+        { id: "suspension", name: "Colocar Suspensión (Pasante)", step: 1, type: "grupo7" },
+        { id: "p_madera", name: "Cambiar a Poste de madera 9m", step: 1, type: "p3_fijo" },
+        { id: "p_c9", name: "Cambiar a Poste de concreto 9m", step: 1, type: "p3_fijo" },
+        { id: "p_c11", name: "Cambiar a Poste de concreto 11m", step: 1, type: "p3_fijo" },
+        { id: "enderezar", name: "Enderezar Poste", step: 1, type: "poste_logic" },
+        { id: "reubicar", name: "Reubicar Postes", step: 1, type: "p3_fijo" },
+        { id: "fo_bt", name: "Pasar FO a BT (km)", step: 0.1, type: "p1_fijo" },
+        { id: "fo_mt", name: "Pasar FO a MT (km)", step: 0.1, type: "p1_fijo" },
+        { id: "poda_m", name: "Podar >50m", step: 1, type: "p3_fijo" },
+        { id: "poda_l", name: "Podar <50m", step: 1, type: "p1_fijo" },
+        { id: "tensar", name: "Tensar Fibra", step: 1, type: "p1_fijo" }
+    ];
+
+    const container = document.getElementById('items-container');
+
+    configItems.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'input-group';
+        div.innerHTML = `
+            <label>${item.name}</label>
+            <div class="controls">
+                <button class="btn-tool" onclick="changeVal('${item.id}', -${item.step})">-</button>
+                <input type="number" id="${item.id}" value="0" step="${item.step}" min="0">
+                <button class="btn-tool" onclick="changeVal('${item.id}', ${item.step})">+</button>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+
+    function changeVal(id, delta) {
+        const input = document.getElementById(id);
+        const item = configItems.find(i => i.id === id);
+        let val = parseFloat(input.value) + delta;
+        input.value = val < 0 ? 0 : (item.step === 0.1 ? val.toFixed(1) : Math.round(val));
+    }
+
+    function generarReporte() {
+        const ruta = document.getElementById('ruta').value.toUpperCase() || "SIN RUTA";
+        let p1 = [], p2 = [], p3 = [];
+
+        configItems.forEach(item => {
+            const val = parseFloat(document.getElementById(item.id).value);
+            if (val <= 0) return;
+
+            const line = `${item.name} 0/${Number.isInteger(val) ? val : val.toFixed(1)}`;
+
+            // LÓGICA DE CLASIFICACIÓN
+            if (item.type === "p1_fijo") {
+                p1.push(line);
+            } 
+            else if (item.type === "poda_l") {
+                p1.push(line);
+            }
+            else if (item.type === "poste_logic") {
+                if (val <= 5) p1.push(line);
+                else p3.push(line);
+            }
+            else if (item.type === "fibra") {
+                if (val < 1) p2.push(line);
+                else p3.push(line);
+            }
+            else if (item.type === "grupo7") {
+                if (val <= 50) p2.push(line);
+                else p3.push(line);
+            }
+            else {
+                p3.push(line);
+            }
+        });
+
+        let finalMsg = `${ruta}\n\n`;
+        if (p1.length) finalMsg += `*PRIORIDAD 1*\n${p1.join('\n')}\n\n`;
+        if (p2.length) finalMsg += `*PRIORIDAD 2*\n${p2.join('\n')}\n\n`;
+        if (p3.length) finalMsg += `*PRIORIDAD 3*\n${p3.join('\n')}`;
+
+        navigator.clipboard.writeText(finalMsg.trim()).then(() => {
+            alert("Reporte Copiado con éxito:\n\n" + finalMsg);
+        });
+    }
+</script>
+
+</body>
+</html>
