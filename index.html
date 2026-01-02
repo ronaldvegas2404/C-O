@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Campo Pro - Prioridades</title>
+    <title>Control de Consolidacion - Reporte </title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
         .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
@@ -121,9 +121,9 @@
         });
 
         let finalMsg = `${ruta}\n\n`;
-        if (p1.length) finalMsg += `*PRIORIDAD 1*\n${p1.join('\n')}\n\n`;
-        if (p2.length) finalMsg += `*PRIORIDAD 2*\n${p2.join('\n')}\n\n`;
-        if (p3.length) finalMsg += `*PRIORIDAD 3*\n${p3.join('\n')}`;
+        if (p1.length) finalMsg += `* FASE 1 => P1 *\n${p1.join('\n')}\n\n`;
+        if (p2.length) finalMsg += `* FASE 1 => P2 *\n${p2.join('\n')}\n\n`;
+        if (p3.length) finalMsg += `* FASE 2 => P3 *\n${p3.join('\n')}`;
 
         navigator.clipboard.writeText(finalMsg.trim()).then(() => {
             alert("Reporte Copiado con éxito:\n\n" + finalMsg);
@@ -134,4 +134,5 @@
 </body>
 
 </html>
+
 
