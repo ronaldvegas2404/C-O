@@ -121,9 +121,9 @@
         });
 
         let finalMsg = `${ruta}\n\n`;
-        if (p1.length) finalMsg += `* FASE 1 => P1 *\n${p1.join('\n')}\n\n`;
-        if (p2.length) finalMsg += `* FASE 1 => P2 *\n${p2.join('\n')}\n\n`;
-        if (p3.length) finalMsg += `* FASE 2 => P3 *\n${p3.join('\n')}`;
+        if (p1.length) finalMsg += `*FASE 1 => P1*\n${p1.join('\n')}\n\n`;
+        if (p2.length) finalMsg += `*FASE 1 => P2*\n${p2.join('\n')}\n\n`;
+        if (p3.length) finalMsg += `*FASE 2 => P3*\n${p3.join('\n')}`;
 
         navigator.clipboard.writeText(finalMsg.trim()).then(() => {
             alert("Reporte Copiado con éxito:\n\n" + finalMsg);
@@ -134,5 +134,6 @@
 </body>
 
 </html>
+
 
 
