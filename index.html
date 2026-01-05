@@ -173,9 +173,7 @@
     function generarReporteCompleto() {
         const datos = obtenerDatosClasificados();
         
-        // Cambio realizado: Se agregan asteriscos a la ruta
         let finalMsg = `*${datos.ruta}*\n\n`;
-        
         if (datos.p1.length) finalMsg += `*FASE 1 => P1*\n${datos.p1.join('\n')}\n\n`;
         if (datos.p2.length) finalMsg += `*FASE 1 => P2*\n${datos.p2.join('\n')}\n\n`;
         if (datos.p3.length) finalMsg += `*FASE 2 => P3*\n${datos.p3.join('\n')}\n\n`;
@@ -211,7 +209,6 @@
             return;
         }
         // Construcción del mensaje individual
-        // Cambio realizado: Se agregan asteriscos a la ruta
         let finalMsg = `*${datos.ruta}*\n\n`;
         finalMsg += `${titulo}\n`;
         finalMsg += `${items.join('\n')}\n\n`;
@@ -227,3 +224,4 @@
 
 </body>
 </html>
+
