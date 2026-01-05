@@ -3,37 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Consolidacion - Reporte </title>
+    <title>Control de Consolidacion - Reporte</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
         .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
         h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        .ruta-section { margin-bottom: 20px; background: #e8f4fd; padding: 15px; border-radius: 8px; }
+        
+        /* Estilos para la cabecera (Ruta y Responsable) */
+        .header-section { background: #e8f4fd; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .form-row { margin-bottom: 10px; }
+        .form-row:last-child { margin-bottom: 0; }
+        
         .input-group { margin-bottom: 12px; padding: 10px; border: 1px solid #eee; border-radius: 8px; transition: 0.3s; }
         .input-group:hover { background: #f9f9f9; }
         label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85em; color: #34495e; }
+        
         .controls { display: flex; align-items: center; gap: 10px; }
         .btn-tool { background-color: #3498db; color: white; border: none; border-radius: 6px; width: 35px; height: 35px; font-size: 1.2em; cursor: pointer; }
         .btn-tool:hover { background-color: #2980b9; }
-        input[type="number"], input[type="text"] { flex-grow: 1; padding: 8px; border: 1px solid #cbd5e0; border-radius: 6px; text-align: center; }
+        
+        input[type="number"], input[type="text"], select { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; text-align: center; font-size: 1em; background: white; }
+        input[type="text"], select { text-align: left; }
+
+        /* Botón Verde Grande */
         .btn-generate { width: 100%; background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); }
         .btn-generate:hover { background-color: #219150; transform: translateY(-1px); }
+
+        /* Botones de Prioridad Individual */
+        .priority-buttons { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-p { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; color: white; cursor: pointer; font-size: 1em; transition: 0.2s; }
+        
+        .btn-p1 { background-color: #e74c3c; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); } /* Rojo */
+        .btn-p1:hover { background-color: #c0392b; }
+        
+        .btn-p2 { background-color: #e67e22; box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3); } /* Naranja */
+        .btn-p2:hover { background-color: #d35400; }
+        
+        .btn-p3 { background-color: #f1c40f; color: #333; box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3); } /* Amarillo */
+        .btn-p3:hover { background-color: #f39c12; }
+
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>CONSOLIDACION </h2>
+    <h2>CONSOLIDACION</h2>
     
-    <div class="ruta-section">
-        <label>NOMBRE DE LA RUTA:</label>
-        <input type="text" id="ruta" placeholder="Ej: UCA0022-UCA0033">
+    <div class="header-section">
+        <div class="form-row">
+            <label>NOMBRE DE LA RUTA:</label>
+            <input type="text" id="ruta" placeholder="SITE A - SITE B">
+        </div>
+        <div class="form-row">
+            <label>RESPONSABLE:</label>
+            <select id="responsable">
+                <option value="" disabled selected>Seleccione...</option>
+                <option value="Bryam Broncano">Bryam Broncano</option>
+                <option value="Juan Sernaque">Juan Sernaque</option>
+                <option value="Milagros Rupaylla">Milagros Rupaylla</option>
+                <option value="Ronald Ramirez">Ronald Ramirez</option>
+                <option value="Ronald Vegas">Ronald Vegas</option>
+            </select>
+        </div>
     </div>
 
     <div id="items-container">
         </div>
 
-    <button class="btn-generate" onclick="generarReporte()">Copiar Reporte Clasificado</button>
+    <button class="btn-generate" onclick="generarReporteCompleto()">Copiar Reporte COMPLETO</button>
+
+    <div class="priority-buttons">
+        <button class="btn-p btn-p1" onclick="generarPorFase(1)">P1</button>
+        <button class="btn-p btn-p2" onclick="generarPorFase(2)">P2</button>
+        <button class="btn-p btn-p3" onclick="generarPorFase(3)">P3</button>
+    </div>
 </div>
 
 <script>
@@ -65,6 +108,7 @@
 
     const container = document.getElementById('items-container');
 
+    // Generar Inputs
     configItems.forEach((item, index) => {
         const div = document.createElement('div');
         div.className = 'input-group';
@@ -86,8 +130,10 @@
         input.value = val < 0 ? 0 : (item.step === 0.1 ? val.toFixed(1) : Math.round(val));
     }
 
-    function generarReporte() {
+    // Función auxiliar para obtener datos ya clasificados
+    function obtenerDatosClasificados() {
         const ruta = document.getElementById('ruta').value.toUpperCase() || "SIN RUTA";
+        const responsable = document.getElementById('responsable').value || "Sin asignar";
         let p1 = [], p2 = [], p3 = [];
 
         configItems.forEach(item => {
@@ -120,10 +166,54 @@
             }
         });
 
-        let finalMsg = `${ruta}\n\n`;
-        if (p1.length) finalMsg += `*FASE 1 => P1*\n${p1.join('\n')}\n\n`;
-        if (p2.length) finalMsg += `*FASE 1 => P2*\n${p2.join('\n')}\n\n`;
-        if (p3.length) finalMsg += `*FASE 2 => P3*\n${p3.join('\n')}`;
+        return { ruta, responsable, p1, p2, p3 };
+    }
+
+    // Botón Verde (Todo Junto)
+    function generarReporteCompleto() {
+        const datos = obtenerDatosClasificados();
+        
+        let finalMsg = `${datos.ruta}\n\n`;
+        if (datos.p1.length) finalMsg += `*FASE 1 => P1*\n${datos.p1.join('\n')}\n\n`;
+        if (datos.p2.length) finalMsg += `*FASE 1 => P2*\n${datos.p2.join('\n')}\n\n`;
+        if (datos.p3.length) finalMsg += `*FASE 2 => P3*\n${datos.p3.join('\n')}\n\n`;
+        
+        finalMsg += `Responsable: ${datos.responsable}`;
+
+        navigator.clipboard.writeText(finalMsg.trim()).then(() => {
+            alert("Reporte Copiado con éxito:\n\n" + finalMsg);
+        });
+    }
+
+    // Botones Individuales (P1, P2, P3)
+    function generarPorFase(fase) {
+        const datos = obtenerDatosClasificados();
+        let items = [];
+        let titulo = "";
+
+        // Seleccionar datos según el botón presionado
+        if (fase === 1) {
+            items = datos.p1;
+            titulo = "*FASE 1 => P1*";
+        } else if (fase === 2) {
+            items = datos.p2;
+            titulo = "*FASE 1 => P2*";
+        } else if (fase === 3) {
+            items = datos.p3;
+            titulo = "*FASE 2 => P3*";
+        }
+
+        // Validación si no hay datos en esa categoría
+        if (items.length === 0) {
+            alert("No hay items registrados para esta prioridad.");
+            return;
+        }
+
+        // Construcción del mensaje individual
+        let finalMsg = `${datos.ruta}\n\n`;
+        finalMsg += `${titulo}\n`;
+        finalMsg += `${items.join('\n')}\n\n`;
+        finalMsg += `Responsable: ${datos.responsable}`;
 
         navigator.clipboard.writeText(finalMsg.trim()).then(() => {
             alert("Reporte Copiado con éxito:\n\n" + finalMsg);
@@ -132,8 +222,4 @@
 </script>
 
 </body>
-
 </html>
-
-
-
