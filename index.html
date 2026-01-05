@@ -58,11 +58,11 @@
             <label>RESPONSABLE:</label>
             <select id="responsable">
                 <option value="" disabled selected>Seleccione...</option>
-                <option value="Bryam Broncano">Bryam Broncano</option>
-                <option value="Juan Sernaque">Juan Sernaque</option>
-                <option value="Milagros Rupaylla">Milagros Rupaylla</option>
-                <option value="Ronald Ramirez">Ronald Ramirez</option>
-                <option value="Ronald Vegas">Ronald Vegas</option>
+                <option value="Bryam Broncano (917 138 359)">Bryam Broncano</option>
+                <option value="Juan Sernaque (921 697 414)">Juan Sernaque</option>
+                <option value="Milagros Rupaylla (918 634 165)">Milagros Rupaylla</option>
+                <option value="Ronald Ramirez (930 610 074)">Ronald Ramirez</option>
+                <option value="Ronald Vegas (928 151 426)">Ronald Vegas</option>
             </select>
         </div>
     </div>
@@ -173,7 +173,9 @@
     function generarReporteCompleto() {
         const datos = obtenerDatosClasificados();
         
-        let finalMsg = `${datos.ruta}\n\n`;
+        // Cambio realizado: Se agregan asteriscos a la ruta
+        let finalMsg = `*${datos.ruta}*\n\n`;
+        
         if (datos.p1.length) finalMsg += `*FASE 1 => P1*\n${datos.p1.join('\n')}\n\n`;
         if (datos.p2.length) finalMsg += `*FASE 1 => P2*\n${datos.p2.join('\n')}\n\n`;
         if (datos.p3.length) finalMsg += `*FASE 2 => P3*\n${datos.p3.join('\n')}\n\n`;
@@ -208,9 +210,9 @@
             alert("No hay items registrados para esta prioridad.");
             return;
         }
-
         // Construcción del mensaje individual
-        let finalMsg = `${datos.ruta}\n\n`;
+        // Cambio realizado: Se agregan asteriscos a la ruta
+        let finalMsg = `*${datos.ruta}*\n\n`;
         finalMsg += `${titulo}\n`;
         finalMsg += `${items.join('\n')}\n\n`;
         finalMsg += `Responsable: ${datos.responsable}`;
@@ -218,6 +220,8 @@
         navigator.clipboard.writeText(finalMsg.trim()).then(() => {
             alert("Reporte Copiado con éxito:\n\n" + finalMsg);
         });
+
+        //Copyright © 2026 Ronald Vegas. Todos los derechos reservados.
     }
 </script>
 
