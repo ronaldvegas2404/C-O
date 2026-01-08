@@ -129,38 +129,37 @@
 </div>
 
 <script>
-    // Se añade'category' para saber en qué columna va cada input
     const configItems = [
         // --- FIBRA ---
-        { id: "kv200", name: "Desplegar Fibra kv200 (km)", step: 0.1, type: "fibra", category: "fibra" },
-        { id: "kv300", name: "Desplegar Fibra kv300 (km)", step: 0.1, type: "fibra", category: "fibra" },
-        { id: "kv500", name: "Desplegar Fibra kv500 (km)", step: 0.1, type: "fibra", category: "fibra" },
-        { id: "kv1000", name: "Desplegar Fibra kv1000 (km)", step: 0.1, type: "fibra", category: "fibra" },
-        { id: "fibra_anti", name: "Desplegar Fibra Antiroedor (km)", step: 0.1, type: "fibra", category: "fibra" },
-        { id: "fo_bt", name: "Pasar FO a BT (km)", step: 0.1, type: "p1_fijo", category: "fibra" },
-        { id: "fo_mt", name: "Pasar FO a MT (km)", step: 0.1, type: "p1_fijo", category: "fibra" },
-        { id: "tensar", name: "Tensar Fibra", step: 1, type: "p1_fijo", category: "fibra" },
+        { id: "kv200", name: "Desplegar Fibra kv200 (km)", step: 0.1, category: "fibra" },
+        { id: "kv300", name: "Desplegar Fibra kv300 (km)", step: 0.1, category: "fibra" },
+        { id: "kv500", name: "Desplegar Fibra kv500 (km)", step: 0.1, category: "fibra" },
+        { id: "kv1000", name: "Desplegar Fibra kv1000 (km)", step: 0.1, category: "fibra" },
+        { id: "fibra_anti", name: "Desplegar Fibra Antiroedor (km)", step: 0.1, category: "fibra" },
+        { id: "fo_bt", name: "Pasar FO a BT (km)", step: 0.1, category: "fibra" },
+        { id: "fo_mt", name: "Pasar FO a MT (km)", step: 0.1, category: "fibra" },
+        { id: "tensar", name: "Tensar Fibra", step: 1, category: "fibra" },
 
         // --- ACCESORIOS ---
-        { id: "retenida", name: "Colocar retenida", step: 1, type: "p2_fijo", category: "accesorios" },
-        { id: "brazo", name: "Colocar Brazo", step: 1, type: "grupo7", category: "accesorios" },
-        { id: "c_cruceta", name: "Cambiar Cruceta", step: 1, type: "grupo7", category: "accesorios" },
-        { id: "co_cruceta", name: "Colocar Cruceta", step: 1, type: "grupo7", category: "accesorios" },
-        { id: "corr_cruceta", name: "Corregir Cruceta", step: 1, type: "p1_fijo", category: "accesorios" },
-        { id: "c_mufa", name: "Cambiar Mufa", step: 1, type: "grupo7", category: "accesorios" },
-        { id: "co_mufa", name: "Colocar Mufa", step: 1, type: "grupo7", category: "accesorios" },
-        { id: "corr_mufa", name: "Corregir Mufa", step: 1, type: "p1_fijo", category: "accesorios" },
-        { id: "tension", name: "Colocar Tensión (kit)", step: 1, type: "grupo7", category: "accesorios" },
-        { id: "suspension", name: "Colocar Suspensión (kit)", step: 1, type: "grupo7", category: "accesorios" },
+        { id: "retenida", name: "Colocar retenida", step: 1, category: "accesorios" },
+        { id: "brazo", name: "Colocar Brazo", step: 1, category: "accesorios" },
+        { id: "c_cruceta", name: "Cambiar Cruceta", step: 1, category: "accesorios" },
+        { id: "co_cruceta", name: "Colocar Cruceta", step: 1, category: "accesorios" },
+        { id: "corr_cruceta", name: "Corregir Cruceta", step: 1, category: "accesorios" },
+        { id: "c_mufa", name: "Cambiar Mufa", step: 1, category: "accesorios" },
+        { id: "co_mufa", name: "Colocar Mufa", step: 1, category: "accesorios" },
+        { id: "corr_mufa", name: "Corregir Mufa", step: 1, category: "accesorios" },
+        { id: "tension", name: "Colocar Tensión (kit)", step: 1, category: "accesorios" },
+        { id: "suspension", name: "Colocar Suspensión (kit)", step: 1, category: "accesorios" },
 
         // --- POSTES Y OTROS ---
-        { id: "p_madera", name: "Cambiar a Poste de madera 9m", step: 1, type: "p3_fijo", category: "postes" },
-        { id: "p_c9", name: "Cambiar a Poste de concreto 9m", step: 1, type: "p3_fijo", category: "postes" },
-        { id: "p_c11", name: "Cambiar a Poste de concreto 11m", step: 1, type: "p3_fijo", category: "postes" },
-        { id: "enderezar", name: "Enderezar Poste", step: 1, type: "poste_logic", category: "postes" },
-        { id: "reubicar", name: "Reubicar Postes", step: 1, type: "p3_fijo", category: "postes" },
-        { id: "poda_m", name: "Podar >50m", step: 1, type: "p3_fijo", category: "postes" },
-        { id: "poda_l", name: "Podar <50m", step: 1, type: "p1_fijo", category: "postes" }
+        { id: "p_madera", name: "Cambiar a Poste de madera 9m", step: 1, category: "postes" },
+        { id: "p_c9", name: "Cambiar a Poste de concreto 9m", step: 1, category: "postes" },
+        { id: "p_c11", name: "Cambiar a Poste de concreto 11m", step: 1, category: "postes" },
+        { id: "enderezar", name: "Enderezar Poste", step: 1, category: "postes" },
+        { id: "reubicar", name: "Reubicar Postes", step: 1, category: "postes" },
+        { id: "poda_m", name: "Podar >50m", step: 1, category: "postes" },
+        { id: "poda_l", name: "Podar <50m", step: 1, category: "postes" }
     ];
 
     // Referencias a las columnas
@@ -168,6 +167,7 @@
     const colAccesorios = document.getElementById('col-accesorios');
     const colPostes = document.getElementById('col-postes');
 
+    // Generar Inputs dinámicamente
     configItems.forEach((item) => {
         const div = document.createElement('div');
         div.className = 'input-group';
@@ -209,26 +209,36 @@
 
             const line = `${item.name} 0/${Number.isInteger(val) ? val : val.toFixed(1)}`;
 
-            if (item.type === "p1_fijo") {
-                p1.push(line);
-            } 
-            else if (item.type === "p2_fijo") {
-                p2.push(line);
+            // --- LÓGICA DE CLASIFICACIÓN ---
+
+            // 1. FIBRA
+            if (item.category === "fibra") {
+                if (item.id === "tensar") {
+                    // EXCEPCIÓN: Tensar siempre es P1
+                    p1.push(line);
+                } else {
+                    // Si es >= 1 es P3, sino P2
+                    if (val >= 1) p3.push(line);
+                    else p2.push(line);
+                }
             }
-            else if (item.type === "poste_logic") {
-                if (val <= 5) p1.push(line);
-                else p3.push(line);
+            
+            // 2. ACCESORIOS
+            else if (item.category === "accesorios") {
+                // Si es >= 50 es P3, sino P2
+                if (val >= 50) p3.push(line);
+                else p2.push(line);
             }
-            else if (item.type === "fibra") {
-                if (val < 1) p2.push(line);
-                else p3.push(line);
-            }
-            else if (item.type === "grupo7") {
-                if (val <= 50) p2.push(line);
-                else p3.push(line);
-            }
-            else {
-                p3.push(line);
+            
+            // 3. POSTES Y OTROS
+            else if (item.category === "postes") {
+                if (item.id === "poda_l") {
+                    // EXCEPCIÓN: Podar <50m siempre es P1
+                    p1.push(line);
+                } else {
+                    // El resto es P3
+                    p3.push(line);
+                }
             }
         });
 
@@ -266,7 +276,7 @@
         navigator.clipboard.writeText(finalMsg.trim()).then(() => {
             alert("Reporte Copiado con éxito:\n\n" + finalMsg);
         });
-                // Copyright © 2026 Ronald Vegas. Todos los derechos reservados.
+        //Copyright © 2026 Ronald Vegas. Todos los derechos reservados.
     }
 </script>
 
