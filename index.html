@@ -6,42 +6,80 @@
     <title>Control de Consolidacion - Reporte</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
-        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        
+        /* Aumentar el ancho máximo para que quepan las 3 columnas */
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 1100px; }
+        
         h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
         
-        /* Estilos para la cabecera (Ruta y Responsable) */
-        .header-section { background: #e8f4fd; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        .form-row { margin-bottom: 10px; }
-        .form-row:last-child { margin-bottom: 0; }
+        /* Cabecera horizontal */
+        .header-section { background: #e8f4fd; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 20px; flex-wrap: wrap; }
+        .form-row { flex: 1; min-width: 250px; }
         
-        .input-group { margin-bottom: 12px; padding: 10px; border: 1px solid #eee; border-radius: 8px; transition: 0.3s; }
-        .input-group:hover { background: #f9f9f9; }
         label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85em; color: #34495e; }
-        
-        .controls { display: flex; align-items: center; gap: 10px; }
-        .btn-tool { background-color: #3498db; color: white; border: none; border-radius: 6px; width: 35px; height: 35px; font-size: 1.2em; cursor: pointer; }
-        .btn-tool:hover { background-color: #2980b9; }
-        
         input[type="number"], input[type="text"], select { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; text-align: center; font-size: 1em; background: white; }
         input[type="text"], select { text-align: left; }
 
-        /* Botón Verde Grande */
-        .btn-generate { width: 100%; background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* ESTILOS DE COLUMNAS */
+        .columns-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+            gap: 20px;
+        }
+
+        .column {
+            background: #fff;
+            padding: 10px;
+        }
+
+        .column h3 {
+            text-align: center;
+            background-color: #34495e;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 0;
+            font-size: 1.1em;
+            text-transform: uppercase;
+        }
+
+        /* Estilo de los inputs dentro de las columnas */
+        .input-group { margin-bottom: 10px; padding: 8px; border: 1px solid #eee; border-radius: 8px; transition: 0.3s; background-color: #fff; }
+        .input-group:hover { background: #f9f9f9; border-color: #ddd; }
+        .input-group label { margin-bottom: 5px; font-size: 0.8em; }
+        
+        .controls { display: flex; align-items: center; gap: 5px; }
+        .btn-tool { background-color: #3498db; color: white; border: none; border-radius: 4px; width: 30px; height: 30px; font-size: 1.1em; cursor: pointer; }
+        .btn-tool:hover { background-color: #2980b9; }
+
+        /* Botones de acción */
+        .btn-generate { width: 100%; background-color: #27ae60; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 25px; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); }
         .btn-generate:hover { background-color: #219150; transform: translateY(-1px); }
 
-        /* Botones de Prioridad Individual */
         .priority-buttons { display: flex; gap: 10px; margin-top: 15px; }
         .btn-p { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; color: white; cursor: pointer; font-size: 1em; transition: 0.2s; }
-        
-        .btn-p1 { background-color: #e74c3c; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); } /* Rojo */
+        .btn-p1 { background-color: #e74c3c; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); }
         .btn-p1:hover { background-color: #c0392b; }
-        
-        .btn-p2 { background-color: #e67e22; box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3); } /* Naranja */
+        .btn-p2 { background-color: #e67e22; box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3); }
         .btn-p2:hover { background-color: #d35400; }
-        
-        .btn-p3 { background-color: #f1c40f; color: #333; box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3); } /* Amarillo */
+        .btn-p3 { background-color: #f1c40f; color: #333; box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3); }
         .btn-p3:hover { background-color: #f39c12; }
 
+        /* Si se abre desde celular, colocar en una sola columna */
+        @media (max-width: 768px) {
+            .columns-container { grid-template-columns: 1fr; }
+            .header-section { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
@@ -67,8 +105,19 @@
         </div>
     </div>
 
-    <div id="items-container">
-        </div>
+    <div class="columns-container">
+        <div class="column" id="col-fibra">
+            <h3>FIBRA</h3>
+            </div>
+        
+        <div class="column" id="col-accesorios">
+            <h3>ACCESORIOS</h3>
+             </div>
+        
+        <div class="column" id="col-postes">
+            <h3>POSTES Y OTROS</h3>
+             </div>
+    </div>
 
     <button class="btn-generate" onclick="generarReporteCompleto()">Copiar Reporte COMPLETO</button>
 
@@ -80,36 +129,46 @@
 </div>
 
 <script>
+    // Se añade'category' para saber en qué columna va cada input
     const configItems = [
-        { id: "kv200", name: "Cambio de fibra kv200 (km)", step: 0.1, type: "fibra" },
-        { id: "kv300", name: "Cambio de fibra kv300 (km)", step: 0.1, type: "fibra" },
-        { id: "kv500", name: "Cambio de fibra kv500 (km)", step: 0.1, type: "fibra" },
-        { id: "kv1000", name: "Cambio de fibra kv1000 (km)", step: 0.1, type: "fibra" },
-        { id: "brazo", name: "Colocar Brazo", step: 1, type: "grupo7" },
-        { id: "c_cruceta", name: "Cambiar Cruceta", step: 1, type: "grupo7" },
-        { id: "co_cruceta", name: "Colocar Cruceta", step: 1, type: "grupo7" },
-        { id: "corr_cruceta", name: "Corregir Cruceta", step: 1, type: "p1_fijo" },
-        { id: "c_mufa", name: "Cambiar Mufa", step: 1, type: "grupo7" },
-        { id: "co_mufa", name: "Colocar Mufa", step: 1, type: "grupo7" },
-        { id: "corr_mufa", name: "Corregir Mufa", step: 1, type: "p1_fijo" },
-        { id: "tension", name: "Colocar Tensión (Preformado)", step: 1, type: "grupo7" },
-        { id: "suspension", name: "Colocar Suspensión (Pasante)", step: 1, type: "grupo7" },
-        { id: "p_madera", name: "Cambiar a Poste de madera 9m", step: 1, type: "p3_fijo" },
-        { id: "p_c9", name: "Cambiar a Poste de concreto 9m", step: 1, type: "p3_fijo" },
-        { id: "p_c11", name: "Cambiar a Poste de concreto 11m", step: 1, type: "p3_fijo" },
-        { id: "enderezar", name: "Enderezar Poste", step: 1, type: "poste_logic" },
-        { id: "reubicar", name: "Reubicar Postes", step: 1, type: "p3_fijo" },
-        { id: "fo_bt", name: "Pasar FO a BT (km)", step: 0.1, type: "p1_fijo" },
-        { id: "fo_mt", name: "Pasar FO a MT (km)", step: 0.1, type: "p1_fijo" },
-        { id: "poda_m", name: "Podar >50m", step: 1, type: "p3_fijo" },
-        { id: "poda_l", name: "Podar <50m", step: 1, type: "p1_fijo" },
-        { id: "tensar", name: "Tensar Fibra", step: 1, type: "p1_fijo" }
+        // --- FIBRA ---
+        { id: "kv200", name: "Desplegar Fibra kv200 (km)", step: 0.1, type: "fibra", category: "fibra" },
+        { id: "kv300", name: "Desplegar Fibra kv300 (km)", step: 0.1, type: "fibra", category: "fibra" },
+        { id: "kv500", name: "Desplegar Fibra kv500 (km)", step: 0.1, type: "fibra", category: "fibra" },
+        { id: "kv1000", name: "Desplegar Fibra kv1000 (km)", step: 0.1, type: "fibra", category: "fibra" },
+        { id: "fibra_anti", name: "Desplegar Fibra Antiroedor (km)", step: 0.1, type: "fibra", category: "fibra" },
+        { id: "fo_bt", name: "Pasar FO a BT (km)", step: 0.1, type: "p1_fijo", category: "fibra" },
+        { id: "fo_mt", name: "Pasar FO a MT (km)", step: 0.1, type: "p1_fijo", category: "fibra" },
+        { id: "tensar", name: "Tensar Fibra", step: 1, type: "p1_fijo", category: "fibra" },
+
+        // --- ACCESORIOS ---
+        { id: "retenida", name: "Colocar retenida", step: 1, type: "p2_fijo", category: "accesorios" },
+        { id: "brazo", name: "Colocar Brazo", step: 1, type: "grupo7", category: "accesorios" },
+        { id: "c_cruceta", name: "Cambiar Cruceta", step: 1, type: "grupo7", category: "accesorios" },
+        { id: "co_cruceta", name: "Colocar Cruceta", step: 1, type: "grupo7", category: "accesorios" },
+        { id: "corr_cruceta", name: "Corregir Cruceta", step: 1, type: "p1_fijo", category: "accesorios" },
+        { id: "c_mufa", name: "Cambiar Mufa", step: 1, type: "grupo7", category: "accesorios" },
+        { id: "co_mufa", name: "Colocar Mufa", step: 1, type: "grupo7", category: "accesorios" },
+        { id: "corr_mufa", name: "Corregir Mufa", step: 1, type: "p1_fijo", category: "accesorios" },
+        { id: "tension", name: "Colocar Tensión (kit)", step: 1, type: "grupo7", category: "accesorios" },
+        { id: "suspension", name: "Colocar Suspensión (kit)", step: 1, type: "grupo7", category: "accesorios" },
+
+        // --- POSTES Y OTROS ---
+        { id: "p_madera", name: "Cambiar a Poste de madera 9m", step: 1, type: "p3_fijo", category: "postes" },
+        { id: "p_c9", name: "Cambiar a Poste de concreto 9m", step: 1, type: "p3_fijo", category: "postes" },
+        { id: "p_c11", name: "Cambiar a Poste de concreto 11m", step: 1, type: "p3_fijo", category: "postes" },
+        { id: "enderezar", name: "Enderezar Poste", step: 1, type: "poste_logic", category: "postes" },
+        { id: "reubicar", name: "Reubicar Postes", step: 1, type: "p3_fijo", category: "postes" },
+        { id: "poda_m", name: "Podar >50m", step: 1, type: "p3_fijo", category: "postes" },
+        { id: "poda_l", name: "Podar <50m", step: 1, type: "p1_fijo", category: "postes" }
     ];
 
-    const container = document.getElementById('items-container');
+    // Referencias a las columnas
+    const colFibra = document.getElementById('col-fibra');
+    const colAccesorios = document.getElementById('col-accesorios');
+    const colPostes = document.getElementById('col-postes');
 
-    // Generar Inputs
-    configItems.forEach((item, index) => {
+    configItems.forEach((item) => {
         const div = document.createElement('div');
         div.className = 'input-group';
         div.innerHTML = `
@@ -120,17 +179,25 @@
                 <button class="btn-tool" onclick="changeVal('${item.id}', ${item.step})">+</button>
             </div>
         `;
-        container.appendChild(div);
+
+        // Lógica de distribución en columnas
+        if (item.category === 'fibra') {
+            colFibra.appendChild(div);
+        } else if (item.category === 'accesorios') {
+            colAccesorios.appendChild(div);
+        } else {
+            colPostes.appendChild(div);
+        }
     });
 
     function changeVal(id, delta) {
         const input = document.getElementById(id);
         const item = configItems.find(i => i.id === id);
         let val = parseFloat(input.value) + delta;
-        input.value = val < 0 ? 0 : (item.step === 0.1 ? val.toFixed(1) : Math.round(val));
+        if (val < 0) val = 0;
+        input.value = item.step === 0.1 ? val.toFixed(1) : Math.round(val);
     }
 
-    // Función auxiliar para obtener datos ya clasificados
     function obtenerDatosClasificados() {
         const ruta = document.getElementById('ruta').value.toUpperCase() || "SIN RUTA";
         const responsable = document.getElementById('responsable').value || "Sin asignar";
@@ -142,12 +209,11 @@
 
             const line = `${item.name} 0/${Number.isInteger(val) ? val : val.toFixed(1)}`;
 
-            // LÓGICA DE CLASIFICACIÓN
             if (item.type === "p1_fijo") {
                 p1.push(line);
             } 
-            else if (item.type === "poda_l") {
-                p1.push(line);
+            else if (item.type === "p2_fijo") {
+                p2.push(line);
             }
             else if (item.type === "poste_logic") {
                 if (val <= 5) p1.push(line);
@@ -169,15 +235,12 @@
         return { ruta, responsable, p1, p2, p3 };
     }
 
-    // Botón Verde (Todo Junto)
     function generarReporteCompleto() {
         const datos = obtenerDatosClasificados();
-        
         let finalMsg = `*${datos.ruta}*\n\n`;
         if (datos.p1.length) finalMsg += `*FASE 1 => P1*\n${datos.p1.join('\n')}\n\n`;
         if (datos.p2.length) finalMsg += `*FASE 1 => P2*\n${datos.p2.join('\n')}\n\n`;
         if (datos.p3.length) finalMsg += `*FASE 2 => P3*\n${datos.p3.join('\n')}\n\n`;
-        
         finalMsg += `Responsable: ${datos.responsable}`;
 
         navigator.clipboard.writeText(finalMsg.trim()).then(() => {
@@ -185,43 +248,27 @@
         });
     }
 
-    // Botones Individuales (P1, P2, P3)
     function generarPorFase(fase) {
         const datos = obtenerDatosClasificados();
-        let items = [];
-        let titulo = "";
+        let items = [], titulo = "";
 
-        // Seleccionar datos según el botón presionado
-        if (fase === 1) {
-            items = datos.p1;
-            titulo = "*FASE 1 => P1*";
-        } else if (fase === 2) {
-            items = datos.p2;
-            titulo = "*FASE 1 => P2*";
-        } else if (fase === 3) {
-            items = datos.p3;
-            titulo = "*FASE 2 => P3*";
-        }
+        if (fase === 1) { items = datos.p1; titulo = "*FASE 1 => P1*"; }
+        else if (fase === 2) { items = datos.p2; titulo = "*FASE 1 => P2*"; }
+        else if (fase === 3) { items = datos.p3; titulo = "*FASE 2 => P3*"; }
 
-        // Validación si no hay datos en esa categoría
         if (items.length === 0) {
             alert("No hay items registrados para esta prioridad.");
             return;
         }
-        // Construcción del mensaje individual
-        let finalMsg = `*${datos.ruta}*\n\n`;
-        finalMsg += `${titulo}\n`;
-        finalMsg += `${items.join('\n')}\n\n`;
-        finalMsg += `Responsable: ${datos.responsable}`;
+
+        let finalMsg = `*${datos.ruta}*\n\n${titulo}\n${items.join('\n')}\n\nResponsable: ${datos.responsable}`;
 
         navigator.clipboard.writeText(finalMsg.trim()).then(() => {
             alert("Reporte Copiado con éxito:\n\n" + finalMsg);
         });
-
-        //Copyright © 2026 Ronald Vegas. Todos los derechos reservados.
+                // Copyright © 2026 Ronald Vegas. Todos los derechos reservados.
     }
 </script>
 
 </body>
 </html>
-
